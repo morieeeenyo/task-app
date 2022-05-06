@@ -1,6 +1,6 @@
 import React from "react";
 import { SignInPage } from "./pages/SignInPage";
-import { BrowserRouter as Router, Routes } from "react-router-dom";
+import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import ProtectedRoute from "./components/route/ProtectedRoute";
 import { ConfirmSignUpPage } from "./pages/ConfirmSignUp";
 import { SignUpPage } from "./pages/SignUpPage";
@@ -14,40 +14,70 @@ function App() {
   return (
     <Router>
       <Routes>
-        <ProtectedRoute
-          layout={DashboardLayout}
+        <Route
           path="/"
-          exact
-          component={Home}
-        />
-        <ProtectedRoute
+          element={
+            <ProtectedRoute
+              layout={DashboardLayout}
+              path="/"
+              exact
+              component={Home}
+            />
+          }
+        ></Route>
+        <Route
           path="/profile"
-          layout={DashboardLayout}
-          component={ProfilePage}
-        />
-        <ProtectedRoute
+          element={
+            <ProtectedRoute
+              path="/profile"
+              layout={DashboardLayout}
+              component={ProfilePage}
+            />
+          }
+        ></Route>
+        <Route
           path="/settings"
-          layout={DashboardLayout}
-          component={SettingsPage}
-        />
-        <AppRoute
-          layout={NormalLayout}
+          element={
+            <ProtectedRoute
+              path="/settings"
+              layout={DashboardLayout}
+              component={SettingsPage}
+            />
+          }
+        ></Route>
+        <Route
           path="/login"
-          exact
-          component={SignInPage}
-        />
-        <AppRoute
-          layout={NormalLayout}
+          element={
+            <AppRoute
+              layout={NormalLayout}
+              path="/login"
+              exact
+              component={SignInPage}
+            />
+          }
+        ></Route>
+        <Route
           path="/signup"
-          exact
-          component={SignUpPage}
-        />
-        <AppRoute
-          layout={NormalLayout}
+          element={
+            <AppRoute
+              layout={NormalLayout}
+              path="/signup"
+              exact
+              component={SignUpPage}
+            />
+          }
+        ></Route>
+        <Route
           path="/confirm"
-          exact
-          component={ConfirmSignUpPage}
-        />
+          element={
+            <AppRoute
+              layout={NormalLayout}
+              path="/confirm"
+              exact
+              component={ConfirmSignUpPage}
+            />
+          }
+        ></Route>
       </Routes>
     </Router>
   );
