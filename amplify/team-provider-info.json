@@ -9,7 +9,22 @@
       "UnauthRoleName": "amplify-taskapp-dev-60130-unauthRole",
       "StackName": "amplify-taskapp-dev-60130",
       "StackId": "arn:aws:cloudformation:ap-northeast-1:957017051518:stack/amplify-taskapp-dev-60130/b5120340-cd7f-11ec-a227-0a5a461de6cf",
-      "AmplifyAppId": "d28lwwzuv8fbs1"
+      "AmplifyAppId": "d28lwwzuv8fbs1",
+      "AuthTriggerTemplateURL": "https://s3.amazonaws.com/amplify-taskapp-dev-60130-deployment/amplify-cfn-templates/auth/auth-trigger-cloudformation-template.json"
+    },
+    "categories": {
+      "auth": {
+        "taskapp58b3587458b35874": {}
+      },
+      "function": {
+        "taskapp58b3587458b35874CustomMessage": {
+          "REDIRECTURL": "https://.d18xdz6zofj8tw.amplifyapp.com/",
+          "EMAILSUBJECT": "アカウントの確認",
+          "EMAILMESSAGE": "下記のURLをクリックして本登録を完了させてください。",
+          "deploymentBucketName": "amplify-taskapp-dev-60130-deployment",
+          "s3Key": "amplify-builds/taskapp58b3587458b35874CustomMessage-4a394c714e4f71745168-build.zip"
+        }
+      }
     }
   }
 }

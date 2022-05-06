@@ -1,0 +1,26 @@
+{
+  "trigger": true,
+  "modules": [
+    "verification-link"
+  ],
+  "parentResource": "taskapp58b3587458b35874",
+  "functionName": "taskapp58b3587458b35874CustomMessage",
+  "resourceName": "taskapp58b3587458b35874CustomMessage",
+  "parentStack": "auth",
+  "triggerEnvs": [
+    {
+      "key": "RESOURCENAME",
+      "value": "resourceName"
+    }
+  ],
+  "triggerDir": "/snapshot/repo/build/node_modules/@aws-amplify/amplify-category-auth/provider-utils/awscloudformation/triggers/CustomMessage",
+  "triggerTemplate": "CustomMessage.json.ejs",
+  "triggerEventPath": "CustomMessage.event.json",
+  "roleName": "taskapp58b3587458b35874CustomMessage",
+  "skipEdit": true,
+  "REDIRECTURL": "https://.d18xdz6zofj8tw.amplifyapp.com/",
+  "EMAILSUBJECT": "アカウントの確認",
+  "EMAILMESSAGE": "下記のURLをクリックして本登録を完了させてください。",
+  "RESOURCENAME": "resourceName",
+  "enableCors": false
+}
