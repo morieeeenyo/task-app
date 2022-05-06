@@ -1,6 +1,6 @@
 import React from "react";
 import { SignInPage } from "./pages/SignInPage";
-import { BrowserRouter as Router, Switch } from "react-router-dom";
+import { BrowserRouter as Router, Routes } from "react-router-dom";
 import ProtectedRoute from "./components/route/ProtectedRoute";
 import { ConfirmSignUpPage } from "./pages/ConfirmSignUp";
 import { SignUpPage } from "./pages/SignUpPage";
@@ -13,7 +13,7 @@ import { SettingsPage } from "./pages/SettingsPage";
 function App() {
   return (
     <Router>
-      <Switch>
+      <Routes>
         <ProtectedRoute
           layout={DashboardLayout}
           path="/"
@@ -48,7 +48,7 @@ function App() {
           exact
           component={ConfirmSignUpPage}
         />
-      </Switch>
+      </Routes>
     </Router>
   );
 }

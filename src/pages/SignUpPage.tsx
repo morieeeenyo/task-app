@@ -11,7 +11,7 @@ import { useForm, Controller } from "react-hook-form";
 import { Visibility, VisibilityOff, Person, Email } from "@material-ui/icons";
 import { toClickable } from "../components/toClickable";
 import { Copyright } from "../components/Copyright";
-import { useHistory, useLocation } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import { useAuth } from "../cognito/AuthContext";
 import { SignInIconWithText } from "../components/IconWithText";
 
@@ -44,14 +44,14 @@ export function SignUpPage() {
   const [visiblePassword, setPasswordVisible] = useState(false);
   const handleClick = () => setPasswordVisible(!visiblePassword);
 
-  const { handleSubmit, control, errors, setError } = useForm<Inputs>({
+  const { handleSubmit, control, setError, formState: { errors } } = useForm<Inputs>({
     mode: "onBlur",
     reValidateMode: "onChange",
   });
 
   const { isAuthenticated, signUp, error } = useAuth();
 
-  const history = useHistory();
+  const navigate = useNavigate();
   const location = useLocation();
   React.useEffect(() => {
     if (error) {
@@ -61,9 +61,9 @@ export function SignUpPage() {
     }
     if (isAuthenticated) {
       const { from }: any = location.state || { from: { pathname: "/" } };
-      history.replace(from);
+      navigate(from, { replace: true });
     }
-  }, [error, isAuthenticated, setError, location, history]);
+  }, [error, isAuthenticated, setError, location, navigate]);
 
   const onSubmit = async (data: Inputs) => {
     const user = await signUp({
@@ -73,7 +73,7 @@ export function SignUpPage() {
         email: data.email,
       },
     });
-    if (user) history.push("/confirm");
+    if (user) navigate("/confirm");
   };
 
   if (isAuthenticated) return null;
@@ -83,7 +83,7 @@ export function SignUpPage() {
         <SignInIconWithText text="Sign Up" />
         <form className={classes.form}>
           <Controller
-            as={
+            render={() => (
               <TextField
                 label="ユーザ名"
                 error={!!errors.username}
@@ -101,14 +101,14 @@ export function SignUpPage() {
                   ),
                 }}
               />
-            }
+            )}
             name="username"
             control={control}
             defaultValue=""
             rules={{ required: "必須です。" }}
           />
           <Controller
-            as={
+            render={() => (
               <TextField
                 label="メールアドレス"
                 error={!!errors.email}
@@ -127,7 +127,7 @@ export function SignUpPage() {
                   ),
                 }}
               />
-            }
+            )}
             name="email"
             control={control}
             // Reactのフォームコンポーネントは、
@@ -137,7 +137,7 @@ export function SignUpPage() {
             rules={{ required: "必須です。" }}
           />
           <Controller
-            as={
+            render={() => (
               <TextField
                 label="パスワード"
                 error={!!errors.password}
@@ -158,7 +158,7 @@ export function SignUpPage() {
                   ),
                 }}
               />
-            }
+            )}
             name="password"
             control={control}
             // Reactのフォームコンポーネントは、
@@ -168,21 +168,21 @@ export function SignUpPage() {
             rules={{ required: "必須です。" }}
           />
           <Controller
-            as={
+            render={() => (
               <Button
                 type="submit"
                 fullWidth
                 variant="contained"
                 color="primary"
                 className={classes.submit}
+                onClick={handleSubmit(onSubmit)}
               >
                 Sign Up
               </Button>
-            }
+            )}
             name="submit"
             control={control}
             defaultValue=""
-            onClick={handleSubmit(onSubmit)}
           />
         </form>{" "}
       </div>

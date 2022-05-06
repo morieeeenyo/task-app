@@ -1,8 +1,8 @@
 import React from "react";
 import { Link, Grid } from "@material-ui/core";
-import { useHistory } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 export const SignInPageBottomMenu = () => {
-  const history = useHistory();
+  const navigate = useNavigate();
   return (
     <Grid container>
       <Grid item xs>
@@ -14,7 +14,7 @@ export const SignInPageBottomMenu = () => {
         <Link
           variant="body2"
           component="button"
-          onClick={() => history.push("/signup")}
+          onClick={() => navigate("/signup")}
         >
           {"Don't have an account? Sign Up"}
         </Link>

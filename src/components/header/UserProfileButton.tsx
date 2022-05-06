@@ -3,7 +3,7 @@ import { createStyles, makeStyles, Theme } from "@material-ui/core/styles";
 
 import { IconButton, Avatar } from "@material-ui/core";
 import { useAuth } from "../../cognito/AuthContext";
-import { useHistory } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -18,14 +18,14 @@ export const UserProfileButton = (props: any) => {
   const classes = useStyles();
   const { user, isAuthenticated } = useAuth();
 
-  const history = useHistory();
+  const navigate = useNavigate();
 
   if (!isAuthenticated) return null;
   return (
     <IconButton
       color="inherit"
       onClick={() => {
-        history.push("/profile");
+        navigate("/profile");
       }}
       {...props}
     >
