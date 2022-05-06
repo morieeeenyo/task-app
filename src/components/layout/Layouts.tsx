@@ -1,20 +1,9 @@
 import React from "react";
 import { Header } from "../Header";
 import { Links } from "../../Links";
-import { createStyles, makeStyles, Theme, Container } from "@material-ui/core";
-
-const useStyles = makeStyles((theme: Theme) =>
-  createStyles({
-    main: {
-      paddingTop: "20px",
-      // backgroundColor: "#e1e4e8",
-      // height: "100vh",
-    },
-  })
-);
+import { Container } from "@mui/material";
 
 export const DashboardLayout = ({ children }: any) => {
-  const classes = useStyles();
   return (
     <Container maxWidth="lg">
       <Header />
@@ -24,7 +13,7 @@ export const DashboardLayout = ({ children }: any) => {
       </Container>
 
       <Container maxWidth="xl">
-        <div className={classes.main}>{children}</div>
+        <div>{children}</div>
       </Container>
     </Container>
   );

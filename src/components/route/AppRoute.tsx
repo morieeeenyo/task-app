@@ -7,7 +7,7 @@ export const AppRoute = ({
 }: any) => (
   <Route
     {...rest}
-    render={(props) => (
+    render={(props: any) => (
       <Layout>
         <Component {...props} />
       </Layout>

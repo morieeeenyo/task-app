@@ -15,18 +15,9 @@ export type LoginOption = {
 interface ICognitoAuthProviderParams {
   amplifyConfig: {
     aws_project_region: string;
-    aws_cognito_identity_pool_id: string;
     aws_cognito_region: string;
     aws_user_pools_id: string;
     aws_user_pools_web_client_id: string;
-    oauth: {
-      domain: string;
-      scope: string[];
-      redirectSignIn: string;
-      redirectSignOut: string;
-      responseType: string;
-    };
-    federationTarget: string;
   };
   children: any;
 }
@@ -67,7 +58,7 @@ export default function CognitoAuthProvider(props: ICognitoAuthProviderParams) {
       await Auth.signIn(username, password);
       currentAuthenticatedUser();
       setIsAuthenticated(true);
-    } catch (error) {
+    } catch (error: any) {
       console.log("error signing in", error);
       setError(error);
       setIsAuthenticated(false);
@@ -83,7 +74,7 @@ export default function CognitoAuthProvider(props: ICognitoAuthProviderParams) {
     try {
       result = await Auth.signUp(param);
       setUser(result.user);
-    } catch (error) {
+    } catch (error: any) {
       console.log("error signing up", error);
       setError(error);
     }
@@ -96,7 +87,7 @@ export default function CognitoAuthProvider(props: ICognitoAuthProviderParams) {
     try {
       await Auth.confirmSignUp(username, code);
       setIsAuthenticated(true);
-    } catch (error) {
+    } catch (error: any) {
       console.log("error confirming sign up", error);
       setError(error);
     }

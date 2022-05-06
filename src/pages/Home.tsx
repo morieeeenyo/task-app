@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { API, graphqlOperation } from "aws-amplify";
 import { CreateTaskMutationVariables } from "../API";
 import { createTask } from "../graphql/mutations";
-import { TextField, Grid, Button } from "@material-ui/core";
+import { TextField, Grid, Button } from "@mui/material";
 import { TaskList } from "./TaskList";
 
 export type Task = {

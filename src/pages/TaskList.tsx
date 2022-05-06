@@ -1,7 +1,7 @@
 import React from "react";
 import { useTasks } from "./useTasks";
 import TaskCard from "../components/TaskCard";
-import { Grid } from "@material-ui/core";
+import { Grid } from "@mui/material";
 export const TaskList = () => {
   const tasks = useTasks();
   return (
