@@ -1,21 +1,10 @@
 import React from "react";
-import { createStyles, makeStyles, Theme } from "@material-ui/core/styles";
-
-import { IconButton, Avatar } from "@material-ui/core";
 import { useAuth } from "../../cognito/AuthContext";
 import { useNavigate } from "react-router-dom";
-
-const useStyles = makeStyles((theme: Theme) =>
-  createStyles({
-    img: {
-      width: theme.spacing(5),
-      height: theme.spacing(5),
-    },
-  })
-);
+import IconButton from '@mui/material/IconButton';
+import Avatar from '@mui/material/Avatar';
 
 export const UserProfileButton = (props: any) => {
-  const classes = useStyles();
   const { user, isAuthenticated } = useAuth();
 
   const navigate = useNavigate();
@@ -34,7 +23,6 @@ export const UserProfileButton = (props: any) => {
         src={
           "https://lh3.googleusercontent.com/ogw/ADGmqu_xwvqPaarEc_Q0405X0zJLWw8nZcdVul-0gdGl=s83-c-mo"
         }
-        className={classes.img}
       />
     </IconButton>
   );

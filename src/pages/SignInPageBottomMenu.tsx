@@ -1,6 +1,8 @@
 import React from "react";
-import { Link, Grid } from "@material-ui/core";
 import { useNavigate } from "react-router-dom";
+import Link from '@mui/material/Link';
+import Grid from '@mui/material/Grid';
+
 export const SignInPageBottomMenu = () => {
   const navigate = useNavigate();
   return (

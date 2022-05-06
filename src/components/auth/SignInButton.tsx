@@ -1,7 +1,7 @@
 import React from "react";
-import Button from "@material-ui/core/Button";
 import { useAuth } from "../../cognito/AuthContext";
 import { useNavigate } from "react-router-dom";
+import Button from '@mui/material/Button'
 
 export default function SignInButton(props: any) {
   const { isAuthenticated } = useAuth();
