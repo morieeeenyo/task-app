@@ -9,6 +9,7 @@ import Container from "@mui/material/Container";
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
 import Box from "@mui/material/Box";
+import { FormWrapper, SubmitButton, UserForm } from "./SignInPage";
 
 type Inputs = {
   username: string;
@@ -61,9 +62,9 @@ export function SignUpPage() {
   if (isAuthenticated) return null;
   return (
     <Container component="main" maxWidth="xs">
-      <div>
+      <FormWrapper>
         <SignInIconWithText text="Sign Up" />
-        <form>
+        <UserForm>
           <Controller
             render={() => (
               <TextField
@@ -128,7 +129,7 @@ export function SignUpPage() {
           />
           <Controller
             render={() => (
-              <Button
+              <SubmitButton
                 type="submit"
                 fullWidth
                 variant="contained"
@@ -136,14 +137,14 @@ export function SignUpPage() {
                 onClick={handleSubmit(onSubmit)}
               >
                 Sign Up
-              </Button>
+              </SubmitButton>
             )}
             name="submit"
             control={control}
             defaultValue=""
           />
-        </form>{" "}
-      </div>
+      </UserForm>{" "}
+      </FormWrapper>
       <Box mt={8}>
         <Copyright />
       </Box>

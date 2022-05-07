@@ -5,6 +5,7 @@ import * as serviceWorker from "./serviceWorker";
 import "./index.css";
 import CognitoAuthProvider from "./cognito/CognitoAuthProvider";
 import awsconfig from "./aws-exports";
+import { Theme } from "./theme";
 
 
 const container = document.getElementById('root');
@@ -12,7 +13,9 @@ if (container) {
   const root = createRoot(container);
   root.render(
     <CognitoAuthProvider amplifyConfig={awsconfig}>
-      <App />
+      <Theme>
+        <App />
+      </Theme>
     </CognitoAuthProvider>
   );
 }

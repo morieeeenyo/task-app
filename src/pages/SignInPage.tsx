@@ -10,6 +10,7 @@ import Container from "@mui/material/Container";
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
 import Box from "@mui/material/Box";
+import { styled } from "@mui/material";
 
 type Inputs = {
   username: string;
@@ -17,13 +18,34 @@ type Inputs = {
   submit: string;
 };
 
+export const FormWrapper = styled("div")(({ theme }) => ({
+  marginTop: theme.spacing(8),
+  display: "flex",
+  flexDirection: "column",
+  alignItems: "center",
+}));
+
+export const UserForm = styled("form")(({ theme }) => ({
+  width: "100%", // Fix IE 11 issue.
+  marginTop: theme.spacing(1),
+}));
+
+export const SubmitButton = styled(Button)(({theme}) => ({
+  margin: theme.spacing(3, 0, 2),
+}))
+
 export function SignInPage() {
   const { isAuthenticated, signIn, error } = useAuth();
 
   const [visiblePassword, setPasswordVisible] = useState(false);
   const handleClick = () => setPasswordVisible(!visiblePassword);
 
-  const { handleSubmit, control, setError, formState: { errors } } = useForm<Inputs>({
+  const {
+    handleSubmit,
+    control,
+    setError,
+    formState: { errors },
+  } = useForm<Inputs>({
     mode: "onBlur",
     reValidateMode: "onChange",
   });
@@ -38,7 +60,7 @@ export function SignInPage() {
     }
     if (isAuthenticated) {
       const { from }: any = location.state || { from: { pathname: "/" } };
-      navigate(from, {replace: true});
+      navigate(from, { replace: true });
     }
   }, [error, isAuthenticated, setError, location, navigate]);
 
@@ -55,9 +77,9 @@ export function SignInPage() {
 
   return (
     <Container component="main" maxWidth="xs">
-      <div>
+      <FormWrapper>
         <SignInIconWithText text="Sign In" />
-        <form>
+        <UserForm>
           <Controller
             render={() => (
               <TextField
@@ -70,8 +92,7 @@ export function SignInPage() {
                 helperText={errors.username?.message || ""}
                 autoComplete="username"
               />
-            )
-            }
+            )}
             name="username"
             control={control}
             defaultValue=""
@@ -79,7 +100,6 @@ export function SignInPage() {
           />
           <Controller
             render={() => (
-
               <TextField
                 label="パスワード"
                 error={!!errors.password}
@@ -91,8 +111,7 @@ export function SignInPage() {
                 type={visiblePassword ? "default" : "password"}
                 autoComplete="current-password"
               />
-            )
-            }
+            )}
             name="password"
             control={control}
             // Reactのフォームコンポーネントは、
@@ -103,7 +122,7 @@ export function SignInPage() {
           />
           <Controller
             render={() => (
-              <Button
+              <SubmitButton
                 type="submit"
                 fullWidth
                 variant="contained"
@@ -111,16 +130,15 @@ export function SignInPage() {
                 onClick={handleSubmit(onSubmit)}
               >
                 Sign In
-              </Button>
-            )
-            }
+              </SubmitButton>
+            )}
             name="submit"
             control={control}
             defaultValue=""
           />
-        </form>{" "}
+        </UserForm>{" "}
         <SignInPageBottomMenu />
-      </div>
+      </FormWrapper>
       <Box mt={8}>
         <Copyright />
       </Box>

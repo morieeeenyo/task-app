@@ -1,6 +1,16 @@
 import React from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import Button from '@mui/material/Button';
+import { styled } from "@mui/material";
+
+const ButtonContainer = styled('div')(() => ({
+  paddingRight: "30px",
+  display: "inline-block",
+}))
+
+const ColorButton = styled(Button)(() => ({
+  borderRadius: "0px",
+}))
 
 const LinkButton = ({ linkTo, text }: any) => {
   const navigate = useNavigate();
@@ -9,16 +19,16 @@ const LinkButton = ({ linkTo, text }: any) => {
   const addStyle =
     location.pathname === linkTo ? { borderBottom: "1px solid #3f51b5" } : {};
   return (
-    <div>
-      <Button
+    <ButtonContainer>
+      <ColorButton
         onClick={() => {
           navigate(linkTo);
         }}
         style={addStyle}
       >
         {text}
-      </Button>
-    </div>
+      </ColorButton>
+    </ButtonContainer>
   );
 };
 
