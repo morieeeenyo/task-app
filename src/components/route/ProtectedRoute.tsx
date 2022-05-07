@@ -9,29 +9,18 @@ const ProtectedRoute = ({
   ...rest
 }: any) => {
   const { isAuthenticated, isLoading } = useContext(AuthContext);
-
+  if (isLoading) return  <Loading />;
+  if (isAuthenticated) {
+    return (
+      <Layout>
+        <Component />
+      </Layout>
+    );
+  }
   return (
-    <Routes>
-      <Route
-        {...rest}
-        render={(props: any) => {
-          if (isLoading) return <Loading />;
-          if (isAuthenticated) {
-            return (
-              <Layout>
-                <Component {...props} />
-              </Layout>
-            );
-          }
-          return (
-            <Navigate
-              to={{ pathname: "/login"}}
-              state={{from: props.location}}
-            />
-          );
-        }}
-      />
-    </Routes>
+    <Navigate
+      to={{ pathname: "/login"}}
+    />
   );
 };
 
