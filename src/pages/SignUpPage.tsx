@@ -1,13 +1,11 @@
-import React, { useState } from "react";
+import React from "react";
 import { useForm, Controller } from "react-hook-form";
-import { toClickable } from "../components/toClickable";
 import { Copyright } from "../components/Copyright";
 import { useNavigate, useLocation } from "react-router-dom";
 import { useAuth } from "../cognito/AuthContext";
 import { SignInIconWithText } from "../components/IconWithText";
 import Container from "@mui/material/Container";
 import TextField from "@mui/material/TextField";
-import Button from "@mui/material/Button";
 import Box from "@mui/material/Box";
 import { FormWrapper, SubmitButton, UserForm } from "./SignInPage";
 
@@ -19,8 +17,6 @@ type Inputs = {
 };
 
 export function SignUpPage() {
-  const [visiblePassword, setPasswordVisible] = useState(false);
-  const handleClick = () => setPasswordVisible(!visiblePassword);
 
   const {
     handleSubmit,
@@ -75,7 +71,6 @@ export function SignUpPage() {
                 fullWidth
                 required
                 helperText={errors.username?.message || ""}
-                autoComplete="username"
               />
             )}
             name="username"
@@ -93,8 +88,7 @@ export function SignUpPage() {
                 fullWidth
                 required
                 helperText={errors.email?.message || ""}
-                type={visiblePassword ? "default" : "email"}
-                autoComplete="current-email"
+                type="email"
               />
             )}
             name="email"
@@ -115,8 +109,7 @@ export function SignUpPage() {
                 fullWidth
                 required
                 helperText={errors.password?.message || ""}
-                type={visiblePassword ? "default" : "password"}
-                autoComplete="current-password"
+                type="password"
               />
             )}
             name="password"

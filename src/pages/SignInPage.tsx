@@ -1,6 +1,5 @@
-import React, { useState } from "react";
+import React from "react";
 import { useForm, Controller } from "react-hook-form";
-import { toClickable } from "../components/toClickable";
 import { Copyright } from "../components/Copyright";
 import { useNavigate, useLocation } from "react-router-dom";
 import { useAuth } from "../cognito/AuthContext";
@@ -36,9 +35,6 @@ export const SubmitButton = styled(Button)(({theme}) => ({
 
 export function SignInPage() {
   const { isAuthenticated, signIn, error } = useAuth();
-
-  const [visiblePassword, setPasswordVisible] = useState(false);
-  const handleClick = () => setPasswordVisible(!visiblePassword);
 
   const {
     handleSubmit,
@@ -108,7 +104,7 @@ export function SignInPage() {
                 fullWidth
                 required
                 helperText={errors.password?.message || ""}
-                type={visiblePassword ? "default" : "password"}
+                type="password"
                 autoComplete="current-password"
               />
             )}
