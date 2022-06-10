@@ -1,18 +1,13 @@
 import React from "react";
-import {
-  Button,
-  TextField,
-  InputAdornment,
-  makeStyles,
-  Container,
-  Box,
-} from "@material-ui/core";
 import { useForm, Controller } from "react-hook-form";
-import { MobileFriendly } from "@material-ui/icons";
 import { Copyright } from "../components/Copyright";
-import { useHistory, useLocation } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import { useAuth } from "../cognito/AuthContext";
 import { SignInIconWithText } from "../components/IconWithText";
+import Container from "@mui/material/Container";
+import TextField from "@mui/material/TextField";
+import Button from "@mui/material/Button";
+import Box from "@mui/material/Box";
 
 type Inputs = {
   username: string;
@@ -20,33 +15,16 @@ type Inputs = {
   submit: string;
 };
 
-const useStyles = makeStyles((theme) => ({
-  paper: {
-    marginTop: theme.spacing(8),
-    display: "flex",
-    flexDirection: "column",
-    alignItems: "center",
-  },
-  form: {
-    width: "100%", // Fix IE 11 issue.
-    marginTop: theme.spacing(1),
-  },
-  submit: {
-    margin: theme.spacing(3, 0, 2),
-  },
-}));
-
 export function ConfirmSignUpPage() {
-  const classes = useStyles();
 
-  const { handleSubmit, control, errors, setError } = useForm<Inputs>({
+  const { handleSubmit, control, setError, formState: { errors } } = useForm<Inputs>({
     mode: "onBlur",
     reValidateMode: "onChange",
   });
 
   const { isAuthenticated, confirmSignUp, error, user } = useAuth();
 
-  const history = useHistory();
+  const navigate = useNavigate();
   const location = useLocation();
   React.useEffect(() => {
     if (error) {
@@ -54,9 +32,9 @@ export function ConfirmSignUpPage() {
     }
     if (isAuthenticated) {
       const { from }: any = location.state || { from: { pathname: "/" } };
-      history.replace(from);
+      navigate(from, {replace: true});
     }
-  }, [error, isAuthenticated, setError, location, history]);
+  }, [error, isAuthenticated, setError, location, navigate]);
 
   const onSubmit = async (data: Inputs) => {
     await confirmSignUp({
@@ -68,11 +46,11 @@ export function ConfirmSignUpPage() {
   if (isAuthenticated) return null;
   return (
     <Container component="main" maxWidth="xs">
-      <div className={classes.paper}>
+      <div>
         <SignInIconWithText text="Enter the verification code" />
-        <form className={classes.form}>
+        <form>
           <Controller
-            as={
+            render={() => (
               <TextField
                 label="verification code"
                 error={!!errors.code}
@@ -82,14 +60,8 @@ export function ConfirmSignUpPage() {
                 required
                 helperText={errors.code?.message || ""}
                 autoComplete="current-code"
-                InputProps={{
-                  startAdornment: (
-                    <InputAdornment position="start">
-                      <MobileFriendly />
-                    </InputAdornment>
-                  ),
-                }}
               />
+             )
             }
             name="code"
             control={control}
@@ -97,21 +69,20 @@ export function ConfirmSignUpPage() {
             rules={{ required: "必須です。" }}
           />
           <Controller
-            as={
+            render={() => (
               <Button
                 type="submit"
                 fullWidth
                 variant="contained"
                 color="primary"
-                className={classes.submit}
+                onClick={handleSubmit(onSubmit)}
               >
                 Verify
               </Button>
-            }
+            )}
             name="submit"
             control={control}
             defaultValue=""
-            onClick={handleSubmit(onSubmit)}
           />
         </form>{" "}
       </div>

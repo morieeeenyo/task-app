@@ -1,20 +1,15 @@
-import React, { useState } from "react";
-import {
-  Button,
-  TextField,
-  InputAdornment,
-  makeStyles,
-  Container,
-  Box,
-} from "@material-ui/core";
+import React from "react";
 import { useForm, Controller } from "react-hook-form";
-import { Visibility, VisibilityOff, Person } from "@material-ui/icons";
-import { toClickable } from "../components/toClickable";
 import { Copyright } from "../components/Copyright";
-import { useHistory, useLocation } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import { useAuth } from "../cognito/AuthContext";
 import { SignInIconWithText } from "../components/IconWithText";
 import { SignInPageBottomMenu } from "./SignInPageBottomMenu";
+import Container from "@mui/material/Container";
+import TextField from "@mui/material/TextField";
+import Button from "@mui/material/Button";
+import Box from "@mui/material/Box";
+import { styled } from "@mui/material";
 
 type Inputs = {
   username: string;
@@ -22,36 +17,36 @@ type Inputs = {
   submit: string;
 };
 
-const useStyles = makeStyles((theme) => ({
-  paper: {
-    marginTop: theme.spacing(8),
-    display: "flex",
-    flexDirection: "column",
-    alignItems: "center",
-  },
-  form: {
-    width: "100%", // Fix IE 11 issue.
-    marginTop: theme.spacing(1),
-  },
-  submit: {
-    margin: theme.spacing(3, 0, 2),
-  },
+export const FormWrapper = styled("div")(({ theme }) => ({
+  marginTop: theme.spacing(8),
+  display: "flex",
+  flexDirection: "column",
+  alignItems: "center",
 }));
+
+export const UserForm = styled("form")(({ theme }) => ({
+  width: "100%", // Fix IE 11 issue.
+  marginTop: theme.spacing(1),
+}));
+
+export const SubmitButton = styled(Button)(({theme}) => ({
+  margin: theme.spacing(3, 0, 2),
+}))
 
 export function SignInPage() {
   const { isAuthenticated, signIn, error } = useAuth();
 
-  const classes = useStyles();
-
-  const [visiblePassword, setPasswordVisible] = useState(false);
-  const handleClick = () => setPasswordVisible(!visiblePassword);
-
-  const { handleSubmit, control, errors, setError } = useForm<Inputs>({
+  const {
+    handleSubmit,
+    control,
+    setError,
+    formState: { errors },
+  } = useForm<Inputs>({
     mode: "onBlur",
     reValidateMode: "onChange",
   });
 
-  const history = useHistory();
+  const navigate = useNavigate();
   const location = useLocation();
 
   React.useEffect(() => {
@@ -61,9 +56,9 @@ export function SignInPage() {
     }
     if (isAuthenticated) {
       const { from }: any = location.state || { from: { pathname: "/" } };
-      history.replace(from);
+      navigate(from, { replace: true });
     }
-  }, [error, isAuthenticated, setError, location, history]);
+  }, [error, isAuthenticated, setError, location, navigate]);
 
   const onSubmit = (data: Inputs) => {
     signIn({
@@ -78,11 +73,11 @@ export function SignInPage() {
 
   return (
     <Container component="main" maxWidth="xs">
-      <div className={classes.paper}>
+      <FormWrapper>
         <SignInIconWithText text="Sign In" />
-        <form className={classes.form}>
+        <UserForm>
           <Controller
-            as={
+            render={() => (
               <TextField
                 label="ユーザ名"
                 error={!!errors.username}
@@ -92,22 +87,15 @@ export function SignInPage() {
                 required
                 helperText={errors.username?.message || ""}
                 autoComplete="username"
-                InputProps={{
-                  startAdornment: (
-                    <InputAdornment position="start">
-                      <Person />
-                    </InputAdornment>
-                  ),
-                }}
               />
-            }
+            )}
             name="username"
             control={control}
             defaultValue=""
             rules={{ required: "必須です。" }}
           />
           <Controller
-            as={
+            render={() => (
               <TextField
                 label="パスワード"
                 error={!!errors.password}
@@ -116,19 +104,10 @@ export function SignInPage() {
                 fullWidth
                 required
                 helperText={errors.password?.message || ""}
-                type={visiblePassword ? "default" : "password"}
+                type="password"
                 autoComplete="current-password"
-                InputProps={{
-                  startAdornment: (
-                    <InputAdornment position="start">
-                      {visiblePassword
-                        ? toClickable(VisibilityOff, handleClick)
-                        : toClickable(Visibility, handleClick)}
-                    </InputAdornment>
-                  ),
-                }}
               />
-            }
+            )}
             name="password"
             control={control}
             // Reactのフォームコンポーネントは、
@@ -138,25 +117,24 @@ export function SignInPage() {
             rules={{ required: "必須です。" }}
           />
           <Controller
-            as={
-              <Button
+            render={() => (
+              <SubmitButton
                 type="submit"
                 fullWidth
                 variant="contained"
                 color="primary"
-                className={classes.submit}
+                onClick={handleSubmit(onSubmit)}
               >
                 Sign In
-              </Button>
-            }
+              </SubmitButton>
+            )}
             name="submit"
             control={control}
             defaultValue=""
-            onClick={handleSubmit(onSubmit)}
           />
-        </form>{" "}
+        </UserForm>{" "}
         <SignInPageBottomMenu />
-      </div>
+      </FormWrapper>
       <Box mt={8}>
         <Copyright />
       </Box>

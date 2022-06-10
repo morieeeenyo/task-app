@@ -1,46 +1,34 @@
 import React from "react";
-import { useHistory, useLocation } from "react-router-dom";
-import {
-  createStyles,
-  makeStyles,
-  Theme,
-  Button,
-  withStyles,
-} from "@material-ui/core";
+import { useNavigate, useLocation } from "react-router-dom";
+import Button from '@mui/material/Button';
+import { styled } from "@mui/material";
 
-const useStyles = makeStyles((theme: Theme) =>
-  createStyles({
-    link: {
-      paddingRight: "30px",
-      display: "inline-block",
-    },
-  })
-);
+const ButtonContainer = styled('div')(() => ({
+  paddingRight: "30px",
+  display: "inline-block",
+}))
 
-const ColorButton = withStyles((theme: Theme) => ({
-  root: {
-    borderRadius: "0px",
-  },
-}))(Button);
+const ColorButton = styled(Button)(() => ({
+  borderRadius: "0px",
+}))
 
 const LinkButton = ({ linkTo, text }: any) => {
-  const classes = useStyles();
-  const history = useHistory();
+  const navigate = useNavigate();
   const location = useLocation();
 
   const addStyle =
     location.pathname === linkTo ? { borderBottom: "1px solid #3f51b5" } : {};
   return (
-    <div className={classes.link}>
+    <ButtonContainer>
       <ColorButton
         onClick={() => {
-          history.push(linkTo);
+          navigate(linkTo);
         }}
         style={addStyle}
       >
         {text}
       </ColorButton>
-    </div>
+    </ButtonContainer>
   );
 };
 

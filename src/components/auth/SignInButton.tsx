@@ -1,16 +1,16 @@
 import React from "react";
-import Button from "@material-ui/core/Button";
 import { useAuth } from "../../cognito/AuthContext";
-import { useHistory } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+import Button from '@mui/material/Button'
 
 export default function SignInButton(props: any) {
   const { isAuthenticated } = useAuth();
-  const history = useHistory();
+  const navigate = useNavigate();
 
   if (isAuthenticated) return null;
 
   const handleClick = () => {
-    history.push("/login");
+    navigate("/login");
   };
 
   return (

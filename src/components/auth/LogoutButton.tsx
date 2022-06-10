@@ -1,7 +1,7 @@
 import React from "react";
 import { useAuth } from "../../cognito/AuthContext";
-import { Tooltip, IconButton } from "@material-ui/core";
-import ExitToAppIcon from "@material-ui/icons/ExitToApp";
+import { Tooltip, IconButton } from "@mui/material";
+import ExitToAppIcon from "@mui/icons-material/ExitToApp";
 
 export default function LogoutButton(props: any) {
   const { isAuthenticated, signOut } = useAuth();

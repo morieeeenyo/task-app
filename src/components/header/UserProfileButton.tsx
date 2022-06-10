@@ -1,40 +1,34 @@
 import React from "react";
-import { createStyles, makeStyles, Theme } from "@material-ui/core/styles";
-
-import { IconButton, Avatar } from "@material-ui/core";
 import { useAuth } from "../../cognito/AuthContext";
-import { useHistory } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+import IconButton from "@mui/material/IconButton";
+import Avatar from "@mui/material/Avatar";
+import { styled } from "@mui/material";
 
-const useStyles = makeStyles((theme: Theme) =>
-  createStyles({
-    img: {
-      width: theme.spacing(5),
-      height: theme.spacing(5),
-    },
-  })
-);
+const AvartIcon = styled(Avatar)(({ theme, ...rest }: any) => ({
+  width: theme.spacing(5),
+  height: theme.spacing(5),
+}));
 
 export const UserProfileButton = (props: any) => {
-  const classes = useStyles();
   const { user, isAuthenticated } = useAuth();
 
-  const history = useHistory();
+  const navigate = useNavigate();
 
   if (!isAuthenticated) return null;
   return (
     <IconButton
       color="inherit"
       onClick={() => {
-        history.push("/profile");
+        navigate("/profile");
       }}
       {...props}
     >
-      <Avatar
+      <AvartIcon
         alt={user + "ProfileImage"}
         src={
           "https://lh3.googleusercontent.com/ogw/ADGmqu_xwvqPaarEc_Q0405X0zJLWw8nZcdVul-0gdGl=s83-c-mo"
         }
-        className={classes.img}
       />
     </IconButton>
   );

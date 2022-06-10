@@ -1,19 +1,13 @@
-import React, { useState } from "react";
-import {
-  Button,
-  TextField,
-  InputAdornment,
-  makeStyles,
-  Container,
-  Box,
-} from "@material-ui/core";
+import React from "react";
 import { useForm, Controller } from "react-hook-form";
-import { Visibility, VisibilityOff, Person, Email } from "@material-ui/icons";
-import { toClickable } from "../components/toClickable";
 import { Copyright } from "../components/Copyright";
-import { useHistory, useLocation } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import { useAuth } from "../cognito/AuthContext";
 import { SignInIconWithText } from "../components/IconWithText";
+import Container from "@mui/material/Container";
+import TextField from "@mui/material/TextField";
+import Box from "@mui/material/Box";
+import { FormWrapper, SubmitButton, UserForm } from "./SignInPage";
 
 type Inputs = {
   username: string;
@@ -22,36 +16,21 @@ type Inputs = {
   submit: string;
 };
 
-const useStyles = makeStyles((theme) => ({
-  paper: {
-    marginTop: theme.spacing(8),
-    display: "flex",
-    flexDirection: "column",
-    alignItems: "center",
-  },
-  form: {
-    width: "100%", // Fix IE 11 issue.
-    marginTop: theme.spacing(1),
-  },
-  submit: {
-    margin: theme.spacing(3, 0, 2),
-  },
-}));
-
 export function SignUpPage() {
-  const classes = useStyles();
 
-  const [visiblePassword, setPasswordVisible] = useState(false);
-  const handleClick = () => setPasswordVisible(!visiblePassword);
-
-  const { handleSubmit, control, errors, setError } = useForm<Inputs>({
+  const {
+    handleSubmit,
+    control,
+    setError,
+    formState: { errors },
+  } = useForm<Inputs>({
     mode: "onBlur",
     reValidateMode: "onChange",
   });
 
   const { isAuthenticated, signUp, error } = useAuth();
 
-  const history = useHistory();
+  const navigate = useNavigate();
   const location = useLocation();
   React.useEffect(() => {
     if (error) {
@@ -61,9 +40,9 @@ export function SignUpPage() {
     }
     if (isAuthenticated) {
       const { from }: any = location.state || { from: { pathname: "/" } };
-      history.replace(from);
+      navigate(from, { replace: true });
     }
-  }, [error, isAuthenticated, setError, location, history]);
+  }, [error, isAuthenticated, setError, location, navigate]);
 
   const onSubmit = async (data: Inputs) => {
     const user = await signUp({
@@ -73,17 +52,17 @@ export function SignUpPage() {
         email: data.email,
       },
     });
-    if (user) history.push("/confirm");
+    if (user) navigate("/confirm");
   };
 
   if (isAuthenticated) return null;
   return (
     <Container component="main" maxWidth="xs">
-      <div className={classes.paper}>
+      <FormWrapper>
         <SignInIconWithText text="Sign Up" />
-        <form className={classes.form}>
+        <UserForm>
           <Controller
-            as={
+            render={() => (
               <TextField
                 label="ユーザ名"
                 error={!!errors.username}
@@ -92,23 +71,15 @@ export function SignUpPage() {
                 fullWidth
                 required
                 helperText={errors.username?.message || ""}
-                autoComplete="username"
-                InputProps={{
-                  startAdornment: (
-                    <InputAdornment position="start">
-                      <Person />
-                    </InputAdornment>
-                  ),
-                }}
               />
-            }
+            )}
             name="username"
             control={control}
             defaultValue=""
             rules={{ required: "必須です。" }}
           />
           <Controller
-            as={
+            render={() => (
               <TextField
                 label="メールアドレス"
                 error={!!errors.email}
@@ -117,17 +88,9 @@ export function SignUpPage() {
                 fullWidth
                 required
                 helperText={errors.email?.message || ""}
-                type={visiblePassword ? "default" : "email"}
-                autoComplete="current-email"
-                InputProps={{
-                  startAdornment: (
-                    <InputAdornment position="start">
-                      <Email />
-                    </InputAdornment>
-                  ),
-                }}
+                type="email"
               />
-            }
+            )}
             name="email"
             control={control}
             // Reactのフォームコンポーネントは、
@@ -137,7 +100,7 @@ export function SignUpPage() {
             rules={{ required: "必須です。" }}
           />
           <Controller
-            as={
+            render={() => (
               <TextField
                 label="パスワード"
                 error={!!errors.password}
@@ -146,19 +109,9 @@ export function SignUpPage() {
                 fullWidth
                 required
                 helperText={errors.password?.message || ""}
-                type={visiblePassword ? "default" : "password"}
-                autoComplete="current-password"
-                InputProps={{
-                  startAdornment: (
-                    <InputAdornment position="start">
-                      {visiblePassword
-                        ? toClickable(VisibilityOff, handleClick)
-                        : toClickable(Visibility, handleClick)}
-                    </InputAdornment>
-                  ),
-                }}
+                type="password"
               />
-            }
+            )}
             name="password"
             control={control}
             // Reactのフォームコンポーネントは、
@@ -168,24 +121,23 @@ export function SignUpPage() {
             rules={{ required: "必須です。" }}
           />
           <Controller
-            as={
-              <Button
+            render={() => (
+              <SubmitButton
                 type="submit"
                 fullWidth
                 variant="contained"
                 color="primary"
-                className={classes.submit}
+                onClick={handleSubmit(onSubmit)}
               >
                 Sign Up
-              </Button>
-            }
+              </SubmitButton>
+            )}
             name="submit"
             control={control}
             defaultValue=""
-            onClick={handleSubmit(onSubmit)}
           />
-        </form>{" "}
-      </div>
+      </UserForm>{" "}
+      </FormWrapper>
       <Box mt={8}>
         <Copyright />
       </Box>
